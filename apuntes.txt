@@ -1,0 +1,147 @@
+Referencias: el baron camisetas retro ( https://elbaroncamisetasretro.mitiendanube.com).
+	   mundial retro camisetas ( https://mundialretrocamisetas.com.ar).
+	   area futbol ( https://www.areafutbolweb.com.ar).
+
+-darle mas funcionalidad al carrito(agregar contador de productos en el icono del carrito,
+botones para modificar las cantidades del producto, el total del carrito, 
+centralizar los numeros de cantidad.) x
+-una pagina de checkout, etc. x
+-agregar pop up abajo a la derecha cada vez que se agrega un producto. x
+-filtrar por equipos. x
+-agregar mas productos.  x
+-no olvidarse de poner footer x
+-CREAR PAGINA DE DESTACADOS(ver after clase 8 de DOM)x
+
+for each con .lenght, otra funcion. 
+
+
+1- Hacer más linda la página.(incluyendo el carrito [ icono de tachito en vez de "x", hacerlo más grande, que aparezca con una animación).
+        https://www.youtube.com/watch?v=8Agk46pvix4&t=50s (((((((se usó para la barra de busqueda))))))))
+2- Agregar más productos. (((x)))
+3- Tratar de imprimir los productos desde JS y que no estén hardcodeados. (((se intentó [de hecho
+ está en el codigo pero comentado] pero hubo problemas)))
+2- Agregar "total del carrito". (((x)))
+3- Boton de comprar adentro del carrito y llevar a página de checkout. Tratar de poner cuotas. (((x)))
+4- Agregar pop up abajo a la derecha cada vez que se agrega un producto. (((creo que no llego)))
+5- Agregar contador al icono del carrito. HECHO (((x)))
+6- Tratar de hacer un filtro por equipos. (Por lo menos). (((no llego)))
+7- Poner footer. (((x)))
+8- Arreglar el total en el carrito(visualmente). (((x)))
+9- Agregar página de "comprar exitosa".(((Se intentò poner el nombre ingresado en el cartel pero no se pudo)))
+10- Subir a GitHub.
+
+
+
+y Si quieres agregar un botón para disminuir o aumentar la cantidad, es totalmente posible, 
+creas dos functions una con incremento y otra con decremento  y las invocas mediante 
+onclick en los respectivos botones.
+
+
+
+PASOS PARA VER SI LO PUEDO HACER POR MI CUENTA:
+
+Agarrar con querySelector el id del contenedor de los productos.(selector)
+
+Con ese selector hacer un addEventListener con `click` y una funcion de agregar 
+producto que haremos mas abajo
+
+Hacemos la funcion y entre parentesis ponemos (e) para poder seleccionar la clase que identifica al 
+boton de agregar producto (e.target.classList.contains(`agregar-producto`), el contains devuelve true or false.
+Todo estos de aca arriba lo usamos adentro de un if. SI contiene `agregar-producto`.
+Declarar variable con const (cardDelProducto) y con e.target.parentElement.parentElement (con este 
+parentElement vamos como hacia sus padres) vamos hacia el card del producto.
+
+Vamos a armar otra funcion para obtener los datos para llevar al carrito (ObtenerDatos(card)). Adentro de esta esta funcion 
+declaro la variable de producto, con sus elementos: nombre, precio, imagen, cantidad y id. adentro de esta variable llamamos
+ a cada dato de cada elemento con card.querySelector(`h4`) [por ejemplo], y luego textContent. asi con cada elemento. 
+la imagen va luego con .src asi nos da la ruta de la misma. el id es con .dataset.id.
+
+Declaramos una variable global con let de carrito, despues del igual va []
+
+Adentro de la funcion obtenerDatos hacemos un push del producto con la variable carrito.
+
+Hacemos una funcion actualizarCarritoHTML() y la ponemos dentro de la funcion de obtenerDatos tambien.
+En esta funcion de actualizarCarritoHTML() hacemos un foreach con carrito. adentro hacemos una arrow function 
+con producto.
+Declaramos un const  con los elementos del producto que va a ser:
+const {elementos del producto separados por coma } = producto (Esto para extraer todos los datos del producto)
+
+Estando todavia en actualizarCarritoHTML() abajo vamos a imprimir los productos al carrito(fijarse clase DOM).
+Para poner un boton de borrar producto ponemos adentro el dato del id (  ${id}  ) y una clase llamada "borrar-producto".
+No olvidarse de utilizar appendChild
+Esto nos va funcionar para agregar productos al carrito pero se van a ir potenciando y no se va a agregar de a uno. Para que 
+esto no pase hay que limpiar el carrito de esta manera (( carritoHTML.innerHTML = " " ))
+
+Para sumar cantidad por numero y que no se repitan vamos a ir a la funcion de ObtenerDatos().
+verificamos si existe el producto o no.
+utilizamos el metodo find de esta manera : const prodExistente = carrito.find(prod => prod.id === producto.id);
+luego un if. SI prodExistente nos da true. vamos a hacer esta funcion dentro: 
+creamos una variable productos, del otro lado ponemos:
+ carrito.map( producto => {
+if(producto.id === prodExistente.id;
+producto.cantidad++;
+return producto;
+} else {
+	return producto;
+}
+});
+carrito = [...productos];
+}else{
+carrito.push(producto); ((inserto el producto en el arreglo del carrito))
+actualizarCarritoHTML;
+}
+
+
+para no perder el carrito al actualizar utilizaremos localStorage. vamos a hacer una funcion llamada actualizarStorage().
+Adentro vamos a poner con setItem `carrito`. vamos a utilizar JSON.stringify(carrito)
+arriba de todo vamos a utilizar el evento DomContentLoaded para parsear el carrito `carrito` del localStorage; esto nos va a dar null, 
+por eso si no encuentra nada vamos a poner || [] . significa que si no encuentra nada va a leer un arreglo vacío.
+
+
+Ahora vamos a borrar producto. hacemos una function llamda borrarProducto().
+Arriba de todo en la parte de los listeners agarramos carritoHTML con addEventListener con el evento `click`y la función borrarProducto.
+Adentro de la funcion borrarProducto ponemos el preventDefault.
+Usaremos la misma logica if de agregarProducto().
+SI el elemento contiene la clase "borrar-producto" agarramos el "data-id" declarando una variable y usando e.target.
+Vamos a usar metodo filter para agarrar los que no tienen el ID seleccionado con !=. Pensar bien la logica de esta función, 
+hay que entenderlo sólo al leerlo.
+Llamo funciones actualizarHTML() y actualizarStorage().
+
+Vaciar carrito: 
+declarar selector de vaciarCarrito y agarrar con querySelector el ID "#vaciar-carrito"
+declarar listener con addEventListener y `click` y la funcion vaciarCarrito() que desarrollaremos abajo.
+Adentro de esta funcion vaciarCarrito() llamo a carrito = [] y luego como siempre actualizamos HTML
+ y Storage con sus respectivas funciones.
+
+Buscador: 
+Declaramos con const formulario. con query selector seleccionamos el id #formulario.
+hacemos un addEventListener con la clase del submit del buscador y la función buscarProducto.
+Hacemos la función buscarProducto(e){}.
+Primero ponemos un preventDefault.
+Declaramos con const la variable buscador, con querySelector seleccionamos el id #buscador con su valor (.value).
+declaramos una variable con const llamada resultado, del otro lado llamamos al stockProducto y filtramos (.filter). Hacemos
+una arrow function (producto => producto.nombre.toLowerCase().includes(buscador)(((((la variable que hicimos arriba))))).
+Ahora tenemos que insertar lo buscado en el DOM.
+Declaramos con let resultadoHTML y le damos un arreglo vacío.
+Luego abajo, con IF(resultado), adentro hacemos un forEach donde el elemento sea producto.
+Adentro de este forEach hacemos un const y un arreglo con los elementos del producto. Del otro lado la variable producto.
+Abajo hacemos resultadoHTML += `(((toda la estructura del card del producto)))).
+Lo insertamos en listaProductos con innerHTML.
+Para resetear el input hacemos this.reset(). This se refiere a "formulario"  del addEventListener.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
